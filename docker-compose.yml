@@ -1,0 +1,13 @@
+services:
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: chroma-demo
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma-data:/data
+    environment:
+      - ANONYMIZED_TELEMETRY=FALSE
+
+volumes:
+  chroma-data:

@@ -1,0 +1,17 @@
+{
+  "name": "vector-database-demo",
+  "version": "1.0.0",
+  "description": "Live conference demo: vector search with ChromaDB's JavaScript client",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "step1": "node step1-setup.js",
+    "step2": "node step2-add-docs.js",
+    "step3": "node step3-query.js",
+    "step4": "node step4-metadata-filter.js"
+  },
+  "dependencies": {
+    "@chroma-core/default-embed": "^0.1.9",
+    "chromadb": "^3.5.0"
+  }
+}
