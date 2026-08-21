@@ -1,6 +1,8 @@
 // STEP 2: Add sample documents (with metadata) to the "documents" collection.
 import { createClient, runStep, COLLECTION_NAME } from "./chroma-client.js";
 
+// `id` is an arbitrary string you choose - could be a UUID or a database row ID.
+// Using readable slugs here purely so the demo output is easy to follow.
 const documents = [
   {
     id: "redis",
