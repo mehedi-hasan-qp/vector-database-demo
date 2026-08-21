@@ -2,7 +2,7 @@
 import { createClient, runStep, printResults, COLLECTION_NAME } from "./chroma-client.js";
 
 const QUERY_TEXT = "How can I improve database connection performance?";
-const N_RESULTS = 3;
+const N_RESULTS = 5;
 
 await runStep("step3-query", async () => {
   const client = createClient();

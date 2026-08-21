@@ -1,8 +1,13 @@
 // STEP 4: Same query as step 3, but filtered to only match documents where technology = "postgres".
+//
+// Without this filter (see step3), both the postgres and mysql documents are
+// strong semantic matches for this query - they're about the same topic.
+// The metadata filter lets you narrow to just one of them deterministically,
+// on top of the semantic ranking.
 import { createClient, runStep, printResults, COLLECTION_NAME } from "./chroma-client.js";
 
 const QUERY_TEXT = "How can I improve database connection performance?";
-const N_RESULTS = 3;
+const N_RESULTS = 5;
 const METADATA_FILTER = { technology: "postgres" };
 
 await runStep("step4-metadata-filter", async () => {

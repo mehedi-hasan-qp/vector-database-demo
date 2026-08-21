@@ -12,7 +12,13 @@ Python client, which can run in-memory with no server.
 
 Embeddings are generated automatically on `.add()` and `.query()` using
 Chroma's default local embedding model (`@chroma-core/default-embed`) — runs
-on your machine, no API key required.
+on your machine, no API key required. It's `Xenova/all-MiniLM-L6-v2`
+(384-dimensional vectors), the same default the Python client uses.
+
+Chroma also builds a vector index (HNSW) on the collection automatically —
+that's what makes similarity search fast instead of comparing the query
+against every stored vector one by one. You never configure this yourself;
+it's just there, unlike SQL where you'd run `CREATE INDEX` explicitly.
 
 ## Run it
 
@@ -21,8 +27,8 @@ npm install
 docker compose up -d          # starts Chroma on localhost:8000
 
 node step1-setup.js           # connect, create the "documents" collection
-node step2-add-docs.js        # add 4 sample docs with metadata
-node step3-query.js           # semantic search, top 3 matches
+node step2-add-docs.js        # add 12 sample docs with metadata
+node step3-query.js           # semantic search, top 5 matches
 node step4-metadata-filter.js # same search, filtered by metadata
 ```
 
@@ -60,14 +66,21 @@ container at itself and fails with a `500 Internal Server Error` /
 ## What each script does
 
 - **step1-setup.js** — connects to Chroma, creates a collection called `documents`.
-- **step2-add-docs.js** — adds 4 documents (about Redis, RabbitMQ, PostgreSQL,
-  Kubernetes), each with a `technology` metadata field.
+- **step2-add-docs.js** — adds 12 documents about common backend
+  technologies, each with a `technology` metadata field. Several pairs cover
+  similar ground on purpose (Redis/Memcached, RabbitMQ/Kafka,
+  PostgreSQL/MySQL) so the ranking in step3/step4 shows real nuance, not just
+  "related vs. unrelated."
 - **step3-query.js** — queries with `"How can I improve database connection
-  performance?"` and prints the top 3 matches by semantic similarity. Note
-  none of these words appear in the PostgreSQL doc — it still ranks first,
-  because the match is on meaning, not keywords.
+  performance?"` and prints the top 5 matches by semantic similarity. None
+  of these words appear in the PostgreSQL doc — it still ranks first, because
+  the match is on meaning, not keywords. Worth pointing out live: MySQL ranks
+  a close second (also about databases), while Redis/Memcached/Kafka trail
+  further behind despite being backend infra too — the model is ranking by
+  actual topical closeness, not just "any tech doc."
 - **step4-metadata-filter.js** — same query, but with a `where: { technology:
-  "postgres" }` filter, so only that one document is eligible to match.
+  "postgres" }` filter. Without it, both postgres and mysql are strong
+  matches; the filter narrows deterministically to just one.
 
 ## Troubleshooting
 
