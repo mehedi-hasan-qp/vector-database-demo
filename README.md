@@ -82,6 +82,17 @@ container at itself and fails with a `500 Internal Server Error` /
   "postgres" }` filter. Without it, both postgres and mysql are strong
   matches; the filter narrows deterministically to just one.
 
+Both step3 and step4 accept a custom query as a command-line argument, so
+you can try audience-suggested queries live instead of editing the file:
+
+```bash
+node step3-query.js "How do I scale read traffic across database replicas?"
+node step4-metadata-filter.js "What's a good recipe for chocolate cake?"
+```
+
+Quote the query so it's passed as a single argument. Running either script
+with no argument falls back to the default database-performance query.
+
 ## Troubleshooting
 
 - **"Could not reach the Chroma server..."** — server isn't running. Run
