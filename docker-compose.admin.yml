@@ -1,0 +1,8 @@
+services:
+  chroma-admin:
+    image: fengzhichao/chromadb-admin
+    container_name: chroma-admin
+    ports:
+      - "3001:3001"
+    environment:
+      - CHROMA_API_URL=http://chroma:8000

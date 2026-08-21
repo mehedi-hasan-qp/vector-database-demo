@@ -18,7 +18,7 @@ on your machine, no API key required.
 
 ```bash
 npm install
-docker compose up -d          # starts Chroma on localhost:8000, admin UI on localhost:3001
+docker compose up -d          # starts Chroma on localhost:8000
 
 node step1-setup.js           # connect, create the "documents" collection
 node step2-add-docs.js        # add 4 sample docs with metadata
@@ -30,12 +30,19 @@ Run them in that order — each one depends on the state the previous one create
 
 To stop the server: `docker compose down` (add `-v` to wipe stored data too).
 
-## Browsing the data
+## Browsing the data (optional)
 
-`docker compose up -d` also starts a web UI at **http://localhost:3001**
-(powered by [chromadb-admin](https://github.com/flanksource/chromadb-admin))
-so you can see the collection, documents, metadata, and IDs without writing
-any code.
+There's an optional web UI for browsing collections/documents/metadata
+without writing code, powered by
+[chromadb-admin](https://github.com/flanksource/chromadb-admin). It's kept
+out of the default `docker compose up` because its image is ~5GB — only pull
+it if you want it:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.admin.yml up -d
+```
+
+Then open **http://localhost:3001**.
 
 ## What each script does
 
