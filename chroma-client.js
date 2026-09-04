@@ -27,6 +27,7 @@ export function printResults(queryResult) {
 }
 
 // Wraps a demo step so live-audience errors are readable instead of a raw stack trace.
+// Also covers the Gemini failures the RAG steps (5-8) can hit.
 export async function runStep(stepName, fn) {
   try {
     await fn();
@@ -38,7 +39,17 @@ export async function runStep(stepName, fn) {
       err?.cause?.code === "ECONNREFUSED" ||
       /fetch failed|failed to connect/i.test(err?.message ?? "");
 
-    if (isConnectionError) {
+    const isApiKeyError =
+      /GEMINI_API_KEY is not set/i.test(err?.message ?? "") ||
+      /API key not valid|API_KEY_INVALID|missing an API key|PERMISSION_DENIED/i.test(err?.message ?? "");
+
+    if (isApiKeyError) {
+      console.error(
+        `Gemini could not authenticate - your API key is missing or invalid.\n` +
+          `  → Get a key at https://aistudio.google.com/apikey\n` +
+          `  → Then set GEMINI_API_KEY in your environment: export GEMINI_API_KEY="your-key-here"\n`
+      );
+    } else if (isConnectionError) {
       console.error(
         `Could not reach the Chroma server at http://${CHROMA_HOST}:${CHROMA_PORT}.\n` +
           `  → Is the server running? Start it with: docker compose up -d\n` +

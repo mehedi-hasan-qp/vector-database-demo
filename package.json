@@ -8,10 +8,15 @@
     "step1": "node step1-setup.js",
     "step2": "node step2-add-docs.js",
     "step3": "node step3-query.js",
-    "step4": "node step4-metadata-filter.js"
+    "step4": "node step4-metadata-filter.js",
+    "step5": "node step5-generate.js",
+    "step6": "node step6-query-rewriting.js",
+    "step7": "node step7-reranking.js",
+    "step8": "node step8-break-it-on-purpose.js"
   },
   "dependencies": {
     "@chroma-core/default-embed": "^0.1.9",
+    "@google/genai": "^2.21.0",
     "chromadb": "^3.5.0"
   }
 }
